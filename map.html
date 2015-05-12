@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://maps.googleapis.com/maps/api/js"></script>
+        <script>
+
+            var infowindow;
+            (function () {
+
+                google.maps.Map.prototype.markers = new Array();
+
+                google.maps.Map.prototype.addMarker = function (marker) {
+                    this.markers[this.markers.length] = marker;
+                };
+
+                google.maps.Map.prototype.getMarkers = function () {
+                    return this.markers
+                };
+
+                google.maps.Map.prototype.clearMarkers = function () {
+                    if (infowindow) {
+                        infowindow.close();
+                    }
+
+                    for (var i = 0; i < this.markers.length; i++) {
+                        this.markers[i].set_map(null);
+                    }
+                };
+            })();
+
+            function initialize() {
+                var latlng = new google.maps.LatLng(50.9406645, 6.9599115);
+                var myOptions = {
+                    zoom: 12,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                            //mapTypeId: google.maps.MapTypeId.SATELLITE
+                };
+                map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+
+
+
+                var a = new Array();
+
+                //put this in for loop
+                var t = new Object();
+                t.name = '<img alt="Google" style="height:55px; width:55px;" src="https://developers.google.com/_static/bfe46bdabc/images/developers-logo.svg">'
+                t.lat = 50.9407745
+                t.lng = 6.9599200
+                t.img = 'https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Google_Maps.png'
+                a.push(t);
+//put this in for loop
+
+                var t = new Object();
+                t.name = '<img alt="Google" style="height:55px; width:55px;" src="https://developers.google.com/_static/bfe46bdabc/images/developers-logo.svg">'
+                t.lat = 50.9507745
+                t.lng = 6.9699200
+                t.img = 'https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Google_Maps.png'
+                a.push(t);
+
+                var t = new Object();
+                t.name = '<img alt="Google" style="height:55px; width:55px;" src="https://developers.google.com/_static/bfe46bdabc/images/developers-logo.svg">'
+                t.lat = 50.9307745
+                t.lng = 6.9499200
+                t.img = 'https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Google_Maps.png'
+                a.push(t);
+
+
+                for (var i = 0; i < a.length; i++) {
+                    var latlng = new google.maps.LatLng(a[i].lat, a[i].lng);
+                    map.addMarker(createMarker(a[i].name, latlng, a[i].img));
+                }
+                console.log(map.getMarkers());
+
+                console.log(map.getMarkers());
+            }
+
+            function createMarker(name, latlng, markerimg) {
+                var marker = new google.maps.Marker({position: latlng, map: map, icon: markerimg});
+                google.maps.event.addListener(marker, "click", function () {
+                    if (infowindow)
+                        infowindow.close();
+                    infowindow = new google.maps.InfoWindow({content: name});
+                    infowindow.open(map, marker);
+                });
+                return marker;
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+        </script>
+    </head>
+    <body>
+        <div id="googleMap" style="width:100%;height:1000px;"></div>
+    </body>
+</html> 
